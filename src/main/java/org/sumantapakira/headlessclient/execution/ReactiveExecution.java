@@ -7,6 +7,7 @@ import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.reactive.client.ReactiveRequest;
 import org.eclipse.jetty.reactive.client.ReactiveResponse;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.reactivestreams.Publisher;
 import org.springframework.http.MediaType;
 import org.sumantapakira.headlessclient.querybuilder.HeadlessClient;
@@ -28,7 +29,8 @@ public class ReactiveExecution<T> implements ExecutionStrategy {
 		if (t instanceof HeadlessClient) {
 			headlessClient = (HeadlessClient) t;
 		}
-		HttpClient httpClient = new HttpClient();
+		SslContextFactory.Client sslContextFactory = new SslContextFactory.Client();
+		HttpClient httpClient = new HttpClient(sslContextFactory);
 		try {
 			httpClient.start();
 		} catch (Exception e) {
