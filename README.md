@@ -1,5 +1,6 @@
 # Async and Reactive Headless-Client
-Async and reactive support
+
+This client is used to query AEM and Magento in Async and reactive way to support the scalability.
 
 Below example query only AEM
 
@@ -130,9 +131,9 @@ And below example query both AEM and Magento
 		ReactiveExecution<HeadlessClient> reactiveExecution = new ReactiveExecution<HeadlessClient>(aemHeadlessClient);
 		context = new ExecutionContext(reactiveExecution);
 		context.executeStrategyReactive();
-
-
 	}
-
 }
 
+# How to build
+
+     mvn clean install
