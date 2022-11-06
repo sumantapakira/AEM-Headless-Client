@@ -1,19 +1,17 @@
 package org.sumantapakira.headlessclient;
 
-
-
+import java.util.concurrent.CompletableFuture;
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.util.concurrent.CompletableFuture;
-
 import org.sumantapakira.headlessclient.execution.AsyncExecution;
 import org.sumantapakira.headlessclient.execution.ExecutionContext;
 import org.sumantapakira.headlessclient.execution.ReactiveExecution;
 import org.sumantapakira.headlessclient.querybuilder.HeadlessClient;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class MainClient {
+public class ClientQueryOnlyAEM {
 
 	public static void main(String[] args) {
 		String param = "Rolex";
@@ -31,7 +29,7 @@ public class MainClient {
 				+ "}";
 		
 		HeadlessClient headlessClient = new HeadlessClient.HeadlessClientBuilder()
-				.withEndpoint("http://172.28.64.1:4502/content/graphql/global/endpoint.json")
+				.withEndpoint("http://localhost:4502/content/graphql/global/endpoint.json")
 				.withBasicAuth("admin", "admin")
 				.withQuery(query)
 				.build();
@@ -54,8 +52,5 @@ public class MainClient {
 		ReactiveExecution<HeadlessClient> reactiveExecution = new ReactiveExecution<HeadlessClient>(headlessClient);
 		 context = new ExecutionContext(reactiveExecution);
 		 context.executeStrategyReactive();
-	    
-
 	}
-
 }
