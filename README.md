@@ -50,9 +50,8 @@ Below example query only AEM
 
 And below example query both AEM and Magento
 
-
-        import java.io.IOException;
 	import java.net.http.HttpResponse;
+	import java.io.IOException;
 	import java.util.concurrent.CompletableFuture;
 	import org.sumantapakira.headlessclient.execution.AsyncExecution;
 	import org.sumantapakira.headlessclient.execution.ExecutionContext;
