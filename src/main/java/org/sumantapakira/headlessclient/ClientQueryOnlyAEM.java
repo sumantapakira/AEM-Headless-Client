@@ -1,19 +1,17 @@
 package org.sumantapakira.headlessclient;
 
 import java.util.concurrent.CompletableFuture;
-import java.io.IOException;
-import java.net.http.HttpResponse;
+import java.util.concurrent.ExecutionException;
+
 import org.sumantapakira.headlessclient.execution.AsyncExecution;
 import org.sumantapakira.headlessclient.execution.ExecutionContext;
+import org.sumantapakira.headlessclient.execution.ExecutionResult;
 import org.sumantapakira.headlessclient.execution.ReactiveExecution;
 import org.sumantapakira.headlessclient.querybuilder.HeadlessClient;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class ClientQueryOnlyAEM {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		String param = "Rolex";
 		String query = "{\n"
 				+ "  rockstartHomePageModelList (variation: \"iot\", filter: {\n"
@@ -23,7 +21,6 @@ public class ClientQueryOnlyAEM {
 				+ "  	}) {\n"
 				+ "    items {\n"
 				+ "      pagecontent\n"
-				+ "      price\n"
 				+ "     }\n"
 				+ "  }\n"
 				+ "}";
@@ -33,24 +30,22 @@ public class ClientQueryOnlyAEM {
 				.withBasicAuth("admin", "admin")
 				.withQuery(query)
 				.build();
-		ExecutionContext context = null;
-		
 		AsyncExecution<HeadlessClient> asyncExecution = new AsyncExecution<HeadlessClient>(headlessClient);
-		context = new ExecutionContext(asyncExecution);
-		CompletableFuture<HttpResponse<String>> response = context.executeStrategyAsync();
-		
-		response.thenAccept(pageResponse -> {
-	        String responseBody = pageResponse.body();
-	        try {
-	        	JsonNode json = new ObjectMapper().readTree(responseBody);
-				System.out.println("text >> " +json.get("data").get("rockstartHomePageModelList").get("items"));
-			}catch (IOException e) {
-				e.printStackTrace();
-			}
-	    });
+		ExecutionContext context = new ExecutionContext(asyncExecution);
+		CompletableFuture<ExecutionResult> response = context.executeStrategyAsync();
+			
+		response.whenComplete((executionResult, ex)->{
+		    if (ex != null) {
+		        System.out.println("Error occurred");
+		        ex.printStackTrace();
+		      } else {
+		        System.out.println("Response :: " + executionResult.getData());
+		      }
+		});
 		
 		ReactiveExecution<HeadlessClient> reactiveExecution = new ReactiveExecution<HeadlessClient>(headlessClient);
 		 context = new ExecutionContext(reactiveExecution);
 		 context.executeStrategyReactive();
 	}
+
 }

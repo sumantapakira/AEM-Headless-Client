@@ -1,6 +1,5 @@
 package org.sumantapakira.headlessclient.execution;
 
-import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
 public class ExecutionContext {
@@ -12,7 +11,7 @@ public class ExecutionContext {
 		this.executionStrategy=t;
 	}
 	
-	public CompletableFuture<HttpResponse<String>> executeStrategyAsync() {
+	public CompletableFuture<ExecutionResult> executeStrategyAsync() {
 		return executionStrategy.executeAsync();
 	}
 	
