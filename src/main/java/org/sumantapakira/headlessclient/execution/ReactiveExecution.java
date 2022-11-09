@@ -2,6 +2,8 @@ package org.sumantapakira.headlessclient.execution;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import java.io.IOException;
+
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.http.HttpHeader;
@@ -11,6 +13,9 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.reactivestreams.Publisher;
 import org.springframework.http.MediaType;
 import org.sumantapakira.headlessclient.querybuilder.HeadlessClient;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.reactivex.Single;
 
@@ -25,7 +30,7 @@ public class ReactiveExecution<T> implements ExecutionStrategy {
 
 	@Override
 	public ExecutionResult executeReactive() {
-
+	    ExecutionResult executionResult=null;
 		if (t instanceof HeadlessClient) {
 			headlessClient = (HeadlessClient) t;
 		}
@@ -48,7 +53,13 @@ public class ReactiveExecution<T> implements ExecutionStrategy {
 		Publisher<String> publisher = reactiveRequest.response(ReactiveResponse.Content.asString());
 
 		String responseContent = Single.fromPublisher(publisher).blockingGet();
-		System.out.println(responseContent);
+		try {
+            JsonNode json =  new ObjectMapper().readTree(responseContent);
+             executionResult = new ExecutionResult(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
 
 		/*
 		 * Comment out if you want to Print the events Publisher<ReactiveRequest.Event>
@@ -71,7 +82,7 @@ public class ReactiveExecution<T> implements ExecutionStrategy {
 		 * System.out.println(requestEventTypes.size());
 		 */
 
-		return null;
+		return executionResult;
 	}
 
 }

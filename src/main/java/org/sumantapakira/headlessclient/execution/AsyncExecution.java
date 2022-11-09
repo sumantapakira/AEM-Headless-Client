@@ -6,15 +6,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Supplier;
-
 import org.eclipse.jetty.http.HttpHeader;
 import org.springframework.http.MediaType;
-import org.sumantapakira.headlessclient.error.DataFetchingException;
 import org.sumantapakira.headlessclient.querybuilder.HeadlessClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -37,7 +36,8 @@ public class AsyncExecution<T> implements ExecutionStrategy {
         this.t = t;
     }
 
-    public static String prepareQuery(String query, Map<String, Object> variables) {
+    public static String prepareQuery(String query,Map<String, Object> variables) {
+        Objects.requireNonNull(query, "Query cannot be null");
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode queryNode = mapper.createObjectNode();
         queryNode.put(KEY_QUERY, query);

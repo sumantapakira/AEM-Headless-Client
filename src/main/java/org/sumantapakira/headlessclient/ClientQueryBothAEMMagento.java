@@ -69,7 +69,7 @@ public class ClientQueryBothAEMMagento {
 
         ReactiveExecution<HeadlessClient> reactiveExecution = new ReactiveExecution<HeadlessClient>(aemHeadlessClient);
         context = new ExecutionContext(reactiveExecution);
-       // context.executeStrategyReactive();
+        context.executeStrategyReactive();
 
     }
 

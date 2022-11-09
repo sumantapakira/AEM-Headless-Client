@@ -36,9 +36,8 @@ public class ClientQueryOnlyAEM {
 			
 		response.whenComplete((executionResult, ex)->{
 		    if (ex != null) {
-		        System.out.println("Error occurred");
-		        ex.printStackTrace();
-		      } else {
+		        System.out.println("Error occurred :: "+ex.getMessage());
+		     } else {
 		        System.out.println("Response :: " + executionResult.getData());
 		      }
 		});
