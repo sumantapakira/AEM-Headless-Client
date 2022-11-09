@@ -38,8 +38,8 @@ public class ExecutionResult {
         return response.get(ERROR).findValue(MESSAGE).asText();
     }
 
-    public DataFetchingException getGraphQLError() {
-        return this.dataFetchingException;
+    public void showGraphQLError() {
+        throw this.dataFetchingException;
     }
 
 }
