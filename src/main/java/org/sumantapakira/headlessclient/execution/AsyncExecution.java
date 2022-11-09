@@ -79,7 +79,7 @@ public class AsyncExecution<T> implements ExecutionStrategy {
                             json = new ObjectMapper().readTree(httpres.body());
                             result = new ExecutionResult(json);
                             if(result.hasError())
-                                throw new DataFetchingException(result.getErrorMessage());
+                                result.showGraphQLError();
                          } catch (IOException e) {
                             e.printStackTrace();
                         }
